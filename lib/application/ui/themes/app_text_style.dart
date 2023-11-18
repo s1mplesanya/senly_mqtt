@@ -1,11 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:senly/application/ui/themes/app_colors.dart';
+
 class AppTextStyle {
-  // static TextStyle titleTextStyle(BuildContext context) {
-  //   return const TextStyle(
-  //     fontSize: 20,
-  //     fontWeight: FontWeight.w700,
-  //     // height: 24 / 18,
-  //     fontFamily: 'SFPRO',
-  //     color: AppColors.white,
-  //   );
-  // }
+  static TextStyle mainTextStyle(BuildContext context) {
+    return const TextStyle(
+      fontSize: 19,
+      fontWeight: FontWeight.w900,
+      height: 22 / 19,
+      color: AppColors.main,
+    );
+  }
 }

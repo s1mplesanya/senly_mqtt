@@ -5,7 +5,7 @@ abstract class AppTheme {
     return ThemeData(
       brightness: Brightness.light,
       // scaffoldBackgroundColor: AppColors.background,
-      // fontFamily: 'Unbounded',
+      fontFamily: 'LexendDeca',
       // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       //   backgroundColor: AppColors.backgroundSecond,
       //   selectedItemColor: AppColors.blue,

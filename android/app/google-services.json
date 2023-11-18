@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "87642467344",
+    "project_id": "senly-a63ea",
+    "storage_bucket": "senly-a63ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87642467344:android:d886d71164ddd47121ae95",
+        "android_client_info": {
+          "package_name": "com.mqtt.senly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7v8__PRv75KQLCZrenqjtfXNKLan5YDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
