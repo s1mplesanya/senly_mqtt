@@ -15,7 +15,7 @@ class ScreenFactory {
 
   Widget makeRegisterScreen() {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => RegisterScreenModel(),
+      create: (BuildContext context) => RegisterScreenModel(context),
       child: const RegisterScreenWidget(),
     );
   }

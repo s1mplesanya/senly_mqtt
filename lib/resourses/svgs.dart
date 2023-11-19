@@ -9,4 +9,5 @@ class AppSvg {
   static const String profile = 'assets/svgs/profile.svg';
   static const String settings = 'assets/svgs/settings.svg';
   static const String upload = 'assets/svgs/upload.svg';
+  static const String googleIcon = 'assets/svgs/google_ic.svg';
 }

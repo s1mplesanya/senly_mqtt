@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       // themeMode: ThemeMode.dark,
       theme: AppTheme.light(context),
       routes: mainNavigation.routes,
-      initialRoute: MainNavigationScreens.mainScreen,
+      initialRoute: MainNavigationScreens.registerScreen,
       onGenerateRoute: mainNavigation.onGenerateRoute,
     );
   }

@@ -10,4 +10,13 @@ class AppTextStyle {
       color: AppColors.main,
     );
   }
+
+  static TextStyle textStyle(BuildContext context, {Color? color}) {
+    return TextStyle(
+      fontSize: 19,
+      fontWeight: FontWeight.w900,
+      height: 22 / 19,
+      color: color,
+    );
+  }
 }
