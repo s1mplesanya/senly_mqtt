@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:senly/application/domain/screen_factory/screen_factory.dart';
 import 'package:senly/application/ui/screens/main_screen/main_screen_model.dart';
 import 'package:senly/application/ui/themes/app_colors.dart';
 import 'package:senly/application/ui/themes/app_text_style.dart';
@@ -12,82 +13,138 @@ class MainScreenWidget extends StatelessWidget {
   const MainScreenWidget({super.key});
   @override
   Widget build(BuildContext context) {
-    final model = context.read<MainScreenModel>();
+    final currentTab =
+        context.select((MainScreenModel model) => model.currentTabIndex);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Text(
-          'CENTRAL MOSCOW',
-          style: AppTextStyle.mainTextStyle(context),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: const _LayersWidget(),
-        leadingWidth: 68,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 18),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: AppColors.color5.withOpacity(0.7),
-                borderRadius: BorderRadius.circular(18),
+      appBar: currentTab == AppSvg.planet
+          ? AppBar(
+              title: Text(
+                'CENTRAL MOSCOW',
+                style: AppTextStyle.mainTextStyle(context),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Image.asset(
-                  Images.crown,
-                  color: AppColors.color2,
-                  height: 17,
+              centerTitle: true,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              leading: const _LayersWidget(),
+              leadingWidth: 68,
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 18),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: AppColors.color5.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Image.asset(
+                        Images.crown,
+                        color: AppColors.color2,
+                        height: 17,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          YandexMap(
-            onMapCreated: (controller) {
-              model.mapControllerCompleter.complete(controller);
-            },
-          ),
-          // if (true)
-          //   Align(
-          //     alignment: Alignment.bottomCenter,
-          //     child: Padding(
-          //       padding: const EdgeInsets.only(
-          //         bottom: 50,
-          //       ),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.center,
-          //         crossAxisAlignment: CrossAxisAlignment.center,
-          //         mainAxisSize: MainAxisSize.min,
-          //         children: [
-          //           Padding(
-          //             padding: const EdgeInsets.only(right: 18, left: 18),
-          //             child: DecoratedBox(
-          //               decoration: BoxDecoration(
-          //                 color: AppColors.color5.withOpacity(0.7),
-          //                 borderRadius: BorderRadius.circular(18),
-          //               ),
-          //               child: Padding(
-          //                 padding: const EdgeInsets.all(12.0),
-          //                 child: Image.asset(
-          //                   Images.crown,
-          //                   color: AppColors.color2,
-          //                   height: 17,
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          const AllButtonsWidget(),
-        ],
-      ),
+              ],
+            )
+          : null,
+      body: const _BodyWidget(),
+    );
+  }
+}
+
+class _MapsWidget extends StatelessWidget {
+  const _MapsWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<MainScreenModel>();
+    final mapObjects =
+        context.select((MainScreenModel model) => model.mapObjects);
+
+    return YandexMap(
+      mapObjects: mapObjects,
+      onMapCreated: (controller) {
+        if (model.mapControllerCompleter.isCompleted == false) {
+          model.mapControllerCompleter.complete(controller);
+        }
+      },
+    );
+
+    // if (true)
+    //   Align(
+    //     alignment: Alignment.bottomCenter,
+    //     child: Padding(
+    //       padding: const EdgeInsets.only(
+    //         bottom: 50,
+    //       ),
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           Padding(
+    //             padding: const EdgeInsets.only(right: 18, left: 18),
+    //             child: DecoratedBox(
+    //               decoration: BoxDecoration(
+    //                 color: AppColors.color5.withOpacity(0.7),
+    //                 borderRadius: BorderRadius.circular(18),
+    //               ),
+    //               child: Padding(
+    //                 padding: const EdgeInsets.all(12.0),
+    //                 child: Image.asset(
+    //                   Images.crown,
+    //                   color: AppColors.color2,
+    //                   height: 17,
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+  }
+}
+
+class _BodyWidget extends StatelessWidget {
+  const _BodyWidget();
+
+  int getIndex(String currentTab) {
+    switch (currentTab) {
+      case AppSvg.messages:
+        return 0;
+      case AppSvg.planet:
+        return 1;
+      case AppSvg.profile:
+        return 2;
+      default:
+        return 1;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenFactory = ScreenFactory();
+
+    final currentTabIndex =
+        context.select((MainScreenModel model) => model.currentTabIndex);
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        const _MapsWidget(),
+        IndexedStack(
+          index: getIndex(currentTabIndex),
+          children: [
+            const Text('Messages'),
+            const SizedBox.shrink(),
+            screenFactory.makeUserScreen(),
+          ],
+        ),
+        const AllButtonsWidget(),
+      ],
     );
   }
 }
@@ -197,7 +254,7 @@ class _ButtonWidget extends StatelessWidget {
       child: FloatingActionButton(
         backgroundColor: AppColors.color5,
         splashColor: AppColors.color5,
-        onPressed: () => model.setCurrentTabIndex(iconPath),
+        onPressed: () => model.setCurrentTabIndex(context, iconPath),
         elevation: 1,
         enableFeedback: false,
         child: SvgPicture.asset(

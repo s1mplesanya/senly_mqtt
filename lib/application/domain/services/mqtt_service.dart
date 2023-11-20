@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:mqtt_client/mqtt_client.dart';
@@ -53,13 +54,14 @@ class MQTTService {
     print('Subscription confirmed for topic $topic');
   }
 
-  void onDisconnected() {
+  void onDisconnected() async {
     print('OnDisconnected client callback - Client disconnection');
     if (_client.connectionStatus!.disconnectionOrigin ==
         MqttDisconnectionOrigin.solicited) {
       print('OnDisconnected callback is solicited, this is correct');
     }
-    exit(-1);
+    // exit(-1);
+    await connect();
   }
 
   void onConnected() {
@@ -75,9 +77,11 @@ class MQTTService {
     _client.unsubscribe(topic);
   }
 
-  void subscribe(String topic) {
+  StreamSubscription<List<MqttReceivedMessage<MqttMessage>>> subscribe(
+      String topic) {
     _client.subscribe(topic, MqttQos.atMostOnce);
-    _client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
+    return _client.updates!
+        .listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
       final recMess = c![0].payload as MqttPublishMessage;
       final pt =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
