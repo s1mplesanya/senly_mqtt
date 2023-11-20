@@ -21,33 +21,33 @@ class MainScreenWidget extends StatelessWidget {
       appBar: currentTab == AppSvg.planet
           ? AppBar(
               title: Text(
-                'CENTRAL MOSCOW',
+                'NOVOPOLOTSK',
                 style: AppTextStyle.mainTextStyle(context),
               ),
               centerTitle: true,
               backgroundColor: Colors.transparent,
               elevation: 0,
-              leading: const _LayersWidget(),
-              leadingWidth: 68,
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 18),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.color5.withOpacity(0.7),
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Image.asset(
-                        Images.crown,
-                        color: AppColors.color2,
-                        height: 17,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              // leading: const _LayersWidget(),
+              // leadingWidth: 68,
+              // actions: [
+              //   Padding(
+              //     padding: const EdgeInsets.only(right: 18),
+              //     child: DecoratedBox(
+              //       decoration: BoxDecoration(
+              //         color: AppColors.color5.withOpacity(0.7),
+              //         borderRadius: BorderRadius.circular(18),
+              //       ),
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(12.0),
+              //         child: Image.asset(
+              //           Images.crown,
+              //           color: AppColors.color2,
+              //           height: 17,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ],
             )
           : null,
       body: const _BodyWidget(),
